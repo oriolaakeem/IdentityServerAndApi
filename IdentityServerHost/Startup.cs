@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IdentityServer4.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace IdentityServerHost
 {
@@ -32,7 +30,7 @@ namespace IdentityServerHost
             services.AddLocalApiAuthentication();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -42,17 +40,19 @@ namespace IdentityServerHost
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseRouting();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            //app.UseAuthentication();
             app.UseIdentityServer();
+            app.UseAuthorization();
 
-            app.UseMvc(routes =>
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServerHost
+namespace IdentityServer4.Quickstart.UI
 {
     /// <summary>
     /// This controller processes the consent UI
@@ -74,7 +74,7 @@ namespace IdentityServerHost
                 {
                     // if the client is PKCE then we assume it's native, so this change in how to
                     // return the response is for better UX for the end user.
-                    return View("Redirect", new RedirectViewModel { RedirectUrl = result.RedirectUri });
+                    return this.LoadingPage("Redirect", result.RedirectUri);
                 }
 
                 return Redirect(result.RedirectUri);
